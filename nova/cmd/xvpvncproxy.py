@@ -21,13 +21,18 @@ import sys
 
 from nova import config
 from nova.openstack.common import log as logging
+from nova.openstack.common.report import guru_meditation_report as gmr
 from nova import service
 from nova.vnc import xvp_proxy
+from nova import version
 
 
 def main():
     config.parse_args(sys.argv)
     logging.setup("nova")
+
+    # enable the GMR for this command
+    gmr.TextGuruMeditation.setup_autorun(version)
 
     wsgi_server = xvp_proxy.get_wsgi_server()
     service.serve(wsgi_server)

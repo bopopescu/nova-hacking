@@ -30,8 +30,10 @@ from nova import exception
 from nova import objects
 from nova.objects import base as objects_base
 from nova.openstack.common import log as logging
+from nova.openstack.common.report import guru_meditation_report as gmr
 from nova import service
 from nova import utils
+from nova import version
 
 CONF = cfg.CONF
 CONF.import_opt('compute_topic', 'nova.compute.rpcapi')
@@ -62,6 +64,9 @@ def main():
         block_db_access()
         objects_base.NovaObject.indirection_api = \
             conductor_rpcapi.ConductorAPI()
+
+    # enable the GMR for this command
+    gmr.TextGuruMeditation.setup_autorun(version)
 
     server = service.Service.create(binary='nova-compute',
                                     topic=CONF.compute_topic,

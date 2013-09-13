@@ -23,7 +23,9 @@ from oslo.config import cfg
 
 from nova import config
 from nova.openstack.common import log as logging
+from nova.openstack.common.report import guru_meditation_report as gmr
 from nova import service
+from nova import version
 
 CONF = cfg.CONF
 CONF.import_opt('consoleauth_manager', 'nova.consoleauth.manager')
@@ -32,6 +34,10 @@ CONF.import_opt('consoleauth_manager', 'nova.consoleauth.manager')
 def main():
     config.parse_args(sys.argv)
     logging.setup("nova")
+
+    # enable the GMR for this command
+    gmr.TextGuruMeditation.setup_autorun(version)
+
     server = service.Service.create(binary='nova-consoleauth',
                                     topic=CONF.consoleauth_topic)
     service.serve(server)

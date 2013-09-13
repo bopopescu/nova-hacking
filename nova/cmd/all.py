@@ -34,9 +34,11 @@ from nova import config
 from nova.objectstore import s3server
 from nova.openstack.common.gettextutils import _
 from nova.openstack.common import log as logging
+from nova.openstack.common.report import guru_meditation_report as gmr
 from nova import service
 from nova import utils
 from nova.vnc import xvp_proxy
+from nova import version
 
 
 CONF = cfg.CONF
@@ -51,6 +53,9 @@ def main():
     LOG = logging.getLogger('nova.all')
     utils.monkey_patch()
     launcher = service.process_launcher()
+
+    # enable the GMR for this command
+    gmr.TextGuruMeditation.setup_autorun(version)
 
     # nova-api
     for api in CONF.enabled_apis:
