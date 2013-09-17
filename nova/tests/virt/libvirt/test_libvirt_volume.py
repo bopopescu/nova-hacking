@@ -55,6 +55,10 @@ class LibvirtVolumeTestCase(test.TestCase):
             def get_hypervisor_type(self):
                 return self.hyperv
 
+            @property
+            def hypervisor_type(self):
+                return 'qemu'
+
             def get_all_block_devices(self):
                 return []
 

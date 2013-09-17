@@ -41,7 +41,8 @@ class Backend(object):
                 pass
 
             def libvirt_info(self, disk_bus, disk_dev, device_type,
-                             cache_mode, extra_specs, hypervisor_version):
+                             cache_mode, extra_specs, hypervisor_type,
+                             hypervisor_version):
                 info = config.LibvirtConfigGuestDisk()
                 info.source_type = 'file'
                 info.source_device = device_type

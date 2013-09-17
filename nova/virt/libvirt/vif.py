@@ -80,6 +80,11 @@ class LibvirtBaseVIFDriver(object):
     def __init__(self, get_connection):
         self.get_connection = get_connection
         self.libvirt_version = None
+        self._cached_libvirt_type = CONF.libvirt_type
+
+    @property
+    def hypervisor_type(self):
+        return self._cached_libvirt_type
 
     def has_libvirt_version(self, want):
         if self.libvirt_version is None:
@@ -116,19 +121,19 @@ class LibvirtBaseVIFDriver(object):
         # Else if the virt type is KVM/QEMU, use virtio according
         # to the global config parameter
         if (model is None and
-            CONF.libvirt_type in ('kvm', 'qemu') and
+            self.hypervisor_type in ('kvm', 'qemu') and
                     CONF.libvirt_use_virtio_for_bridges):
             model = "virtio"
 
         # Workaround libvirt bug, where it mistakenly
         # enables vhost mode, even for non-KVM guests
-        if model == "virtio" and CONF.libvirt_type == "qemu":
+        if model == "virtio" and self.hypervisor_type == "qemu":
             driver = "qemu"
 
-        if not is_vif_model_valid_for_virt(CONF.libvirt_type,
+        if not is_vif_model_valid_for_virt(self.hypervisor_type,
                                            model):
             raise exception.UnsupportedHardware(model=model,
-                                                virt=CONF.libvirt_type)
+                                                virt=self.hypervisor_type)
 
         designer.set_vif_guest_frontend_config(
             conf, vif['address'], model, driver)

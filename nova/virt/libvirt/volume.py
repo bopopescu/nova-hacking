@@ -97,6 +97,7 @@ class LibvirtBaseVolumeDriver(object):
 
         conf = vconfig.LibvirtConfigGuestDisk()
         conf.driver_name = virtutils.pick_disk_driver_name(
+            self.connection.hypervisor_type,
             self.connection.get_hypervisor_version(),
             self.is_block_dev
         )

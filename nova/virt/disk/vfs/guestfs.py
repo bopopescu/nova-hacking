@@ -114,7 +114,8 @@ class VFSGuestFS(vfs.VFS):
         try:
             self.handle.add_drive_opts(self.imgfile, format=self.imgfmt)
             if self.handle.get_attach_method() == 'libvirt':
-                libvirt_url = 'libvirt:' + libvirt_driver.LibvirtDriver.uri()
+                libvirt_url = ('libvirt:' + 
+                               libvirt_driver.LibvirtDriver.get_working_uri())
                 self.handle.set_attach_method(libvirt_url)
             self.handle.launch()
 

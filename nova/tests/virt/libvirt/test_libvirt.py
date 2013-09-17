@@ -679,7 +679,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref,
                                     _fake_network_info(self.stubs, 1),
@@ -726,7 +726,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref,
                                     _fake_network_info(self.stubs, 2),
@@ -784,7 +784,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_create(self.context, self.test_instance)
 
         block_device_info = {'root_device_name': '/dev/vdb'}
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref,
                                             block_device_info)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info,
@@ -812,7 +812,7 @@ class LibvirtConnTestCase(test.TestCase):
                   {'connection_info': conn_info, 'mount_device': '/dev/vdc'},
                   {'connection_info': conn_info, 'mount_device': '/dev/vdd'}]}
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref, info)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info,
                                     None, info)
@@ -830,7 +830,7 @@ class LibvirtConnTestCase(test.TestCase):
         # make configdrive.required_by() return True
         instance_ref['config_drive'] = True
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
 
@@ -847,7 +847,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         self.assertEquals(len(cfg.devices), 5)
@@ -873,7 +873,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         self.assertEquals(len(cfg.devices), 6)
@@ -904,7 +904,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         self.assertEquals(len(cfg.devices), 6)
@@ -935,7 +935,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         self.assertEquals(len(cfg.devices), 6)
@@ -966,7 +966,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         self.assertEquals(len(cfg.devices), 8)
@@ -998,7 +998,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         image_meta = {"properties": {"hw_qemu_guest_agent": "yes"}}
         cfg = conn.get_guest_config(instance_ref, [], image_meta, disk_info)
@@ -1029,7 +1029,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         image_meta = {"properties": {"hw_qemu_guest_agent": "no"}}
         cfg = conn.get_guest_config(instance_ref, [], image_meta, disk_info)
@@ -1095,7 +1095,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_get(self.context, instance_ref['id'])
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
 
@@ -1133,7 +1133,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_get(self.context, instance_ref['id'])
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         cfg = conn.get_guest_config(instance_ref, [], None, disk_info)
         had_pci = 0
@@ -1156,7 +1156,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1176,7 +1176,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1193,7 +1193,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1207,7 +1207,7 @@ class LibvirtConnTestCase(test.TestCase):
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, self.test_instance)
 
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1225,7 +1225,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_create(self.context, self.test_instance)
 
         self.flags(libvirt_cpu_mode="host-passthrough")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1246,7 +1246,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_create(self.context, self.test_instance)
 
         self.flags(libvirt_cpu_mode="host-model")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1268,7 +1268,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.flags(libvirt_cpu_mode="custom")
         self.flags(libvirt_cpu_model="Penryn")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1289,7 +1289,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_create(self.context, self.test_instance)
 
         self.flags(libvirt_cpu_mode="host-passthrough")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         self.assertRaises(exception.NovaException,
                           conn.get_guest_config,
@@ -1326,7 +1326,7 @@ class LibvirtConnTestCase(test.TestCase):
         instance_ref = db.instance_create(self.context, self.test_instance)
 
         self.flags(libvirt_cpu_mode="host-model")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -1352,7 +1352,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.flags(libvirt_cpu_mode="custom")
         self.flags(libvirt_cpu_model="Penryn")
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         conf = conn.get_guest_config(instance_ref,
                                      _fake_network_info(self.stubs, 1),
@@ -2336,7 +2336,7 @@ class LibvirtConnTestCase(test.TestCase):
         network_info = _fake_network_info(self.stubs, 2)
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
         instance_ref = db.instance_create(self.context, instance_data)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         xml = conn.to_xml(instance_ref, network_info, disk_info)
         tree = etree.fromstring(xml)
@@ -2355,7 +2355,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.assertEquals(conn.uri(), 'lxc:///')
 
         network_info = _fake_network_info(self.stubs, 1)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance_ref)
         xml = conn.to_xml(instance_ref, network_info, disk_info)
         tree = etree.fromstring(xml)
@@ -2409,7 +2409,7 @@ class LibvirtConnTestCase(test.TestCase):
             conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
 
             network_info = _fake_network_info(self.stubs, 1)
-            disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+            disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                                 instance_ref)
             xml = conn.to_xml(instance_ref, network_info, disk_info)
             tree = etree.fromstring(xml)
@@ -2445,7 +2445,7 @@ class LibvirtConnTestCase(test.TestCase):
         network_info = _fake_network_info(self.stubs, 1)
 
         drv = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(drv.hypervisor_type,
                                             instance_ref)
         xml = drv.to_xml(instance_ref, network_info, disk_info, image_meta)
         tree = etree.fromstring(xml)
@@ -2458,7 +2458,7 @@ class LibvirtConnTestCase(test.TestCase):
         # The O_DIRECT availability is cached on first use in
         # LibvirtDriver, hence we re-create it here
         drv = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(drv.hypervisor_type,
                                             instance_ref)
         xml = drv.to_xml(instance_ref, network_info, disk_info, image_meta)
         tree = etree.fromstring(xml)
@@ -2473,7 +2473,7 @@ class LibvirtConnTestCase(test.TestCase):
         network_info = _fake_network_info(self.stubs, 1)
 
         drv = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(drv.hypervisor_type,
                                             instance_ref,
                                             block_device_info,
                                             image_meta)
@@ -2502,7 +2502,7 @@ class LibvirtConnTestCase(test.TestCase):
         network_info = _fake_network_info(self.stubs, 1)
 
         drv = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(drv.hypervisor_type,
                                             instance_ref)
         xml = drv.to_xml(instance_ref, network_info, disk_info, image_meta)
         tree = etree.fromstring(xml)
@@ -2657,7 +2657,7 @@ class LibvirtConnTestCase(test.TestCase):
             self.assertEquals(conn.uri(), expected_uri)
 
             network_info = _fake_network_info(self.stubs, 1)
-            disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+            disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                                 instance_ref,
                                                 rescue=rescue)
             xml = conn.to_xml(instance_ref, network_info, disk_info,
@@ -3477,7 +3477,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.stubs.Set(conn, 'get_info', fake_get_info)
 
         image_meta = {'id': instance['image_ref']}
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance,
                                             None,
                                             image_meta)
@@ -3538,7 +3538,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.stubs.Set(conn, 'get_info', fake_get_info)
 
         image_meta = {'id': instance['image_ref']}
-        disk_info = blockinfo.get_disk_info(CONF.libvirt_type,
+        disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
                                             instance,
                                             None,
                                             image_meta)
@@ -5893,13 +5893,14 @@ class LibvirtUtilsTestCase(test.TestCase):
 
             self.flags(libvirt_type=libvirt_type)
             for (is_block_dev, expected_result) in checks:
-                result = libvirt_utils.pick_disk_driver_name(version,
+                result = libvirt_utils.pick_disk_driver_name(libvirt_type,
+                                                             version,
                                                              is_block_dev)
                 self.assertEquals(result, expected_result)
 
     def test_pick_disk_driver_name_xen_4_0_0(self):
         self.flags(libvirt_type="xen")
-        result = libvirt_utils.pick_disk_driver_name(4000000, False)
+        result = libvirt_utils.pick_disk_driver_name('xen', 4000000, False)
         self.assertEquals(result, "tap")
 
     def test_get_disk_size(self):

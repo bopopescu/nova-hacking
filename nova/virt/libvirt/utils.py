@@ -392,7 +392,8 @@ def remove_logical_volumes(*paths):
         execute(*lvremove, attempts=3, run_as_root=True)
 
 
-def pick_disk_driver_name(hypervisor_version, is_block_dev=False):
+def pick_disk_driver_name(hypervisor_type, hypervisor_version,
+                          is_block_dev=False):
     """Pick the libvirt primary backend driver name
 
     If the hypervisor supports multiple backend drivers, then the name
@@ -405,7 +406,7 @@ def pick_disk_driver_name(hypervisor_version, is_block_dev=False):
     :param is_block_dev:
     :returns: driver_name or None
     """
-    if CONF.libvirt_type == "xen":
+    if hypervisor_type == "xen":
         if is_block_dev:
             return "phy"
         else:
@@ -415,7 +416,7 @@ def pick_disk_driver_name(hypervisor_version, is_block_dev=False):
             else:
                 return "tap2"
 
-    elif CONF.libvirt_type in ('kvm', 'qemu'):
+    elif hypervisor_type in ('kvm', 'qemu'):
         return "qemu"
     else:
         # UML doesn't want a driver_name set
@@ -583,14 +584,14 @@ def file_delete(path):
     return os.unlink(path)
 
 
-def find_disk(virt_dom):
+def find_disk(virt_dom, hypervisor_type):
     """Find root device path for instance
 
     May be file or device
     """
     xml_desc = virt_dom.XMLDesc(0)
     domain = etree.fromstring(xml_desc)
-    if CONF.libvirt_type == 'lxc':
+    if hypervisor_type == 'lxc':
         source = domain.find('devices/filesystem/source')
         disk_path = source.get('dir')
         disk_path = disk_path[0:disk_path.rfind('rootfs')]

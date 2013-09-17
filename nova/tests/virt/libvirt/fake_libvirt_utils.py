@@ -171,7 +171,7 @@ def file_open(path, mode=None):
     return File(path, mode)
 
 
-def find_disk(virt_dom):
+def find_disk(virt_dom, hypervisor_type):
     return "filename"
 
 
@@ -206,7 +206,9 @@ def get_instance_path(instance, forceold=False, relative=False):
                                            relative=relative)
 
 
-def pick_disk_driver_name(hypervisor_version, is_block_dev=False):
+def pick_disk_driver_name(hypervisor_type,
+                          hypervisor_version,
+                          is_block_dev=False):
     return "qemu"
 
 
