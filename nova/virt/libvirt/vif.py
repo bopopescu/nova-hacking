@@ -80,10 +80,17 @@ class LibvirtBaseVIFDriver(object):
     def __init__(self, get_connection):
         self.get_connection = get_connection
         self.libvirt_version = None
-        self._cached_libvirt_type = CONF.libvirt_type
+
+        if CONF.libvirt_type == 'auto':
+            self._cached_libvirt_type = None
+        else:
+            self._cached_libvirt_type = CONF.libvirt_type
 
     @property
     def hypervisor_type(self):
+        if self._cached_libvirt_type is None:
+            self._cached_libvirt_type = self.get_connection().getType().lower()
+
         return self._cached_libvirt_type
 
     def has_libvirt_version(self, want):

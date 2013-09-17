@@ -117,9 +117,9 @@ libvirt_opts = [
     cfg.StrOpt('rescue_ramdisk_id',
                help='Rescue ari image'),
     cfg.StrOpt('libvirt_type',
-               default='kvm',
+               default='auto',
                help='Libvirt domain type (valid options are: '
-                    'kvm, lxc, qemu, uml, xen)'),
+                    'kvm, lxc, qemu, uml, xen, auto)'),
     cfg.StrOpt('libvirt_uri',
                default='',
                help='Override the default libvirt URI '
@@ -367,10 +367,17 @@ class LibvirtDriver(driver.ComputeDriver):
 
         self._volume_api = volume.API()
 
-        self._cached_libvirt_type = CONF.libvirt_type
+        if CONF.libvirt_type == 'auto':
+            self._cached_libvirt_type = None
+            # use self.uri() in case we have a CONF.libvirt_uri specified
+        else:
+            self._cached_libvirt_type = CONF.libvirt_type
 
     @property
     def hypervisor_type(self):
+        if self._cached_libvirt_type is None:
+            self._cached_libvirt_type = self._conn.getType().lower()
+
         return self._cached_libvirt_type
 
     @property
@@ -647,7 +654,9 @@ class LibvirtDriver(driver.ComputeDriver):
 
     @staticmethod
     def uri():
-        if CONF.libvirt_type == 'uml':
+        if CONF.libvirt_type == 'auto':
+            uri = CONF.libvirt_uri or None
+        elif CONF.libvirt_type == 'uml':
             uri = CONF.libvirt_uri or 'uml:///system'
         elif CONF.libvirt_type == 'xen':
             uri = CONF.libvirt_uri or 'xen:///'
@@ -664,8 +673,13 @@ class LibvirtDriver(driver.ComputeDriver):
 
         return cls._cached_libvirt_uri
 
-    @staticmethod
-    def _connect(uri, read_only):
+    @classmethod
+    def _set_working_uri(cls, conn):
+        if cls._cached_libvirt_uri is None and cls.uri() is None:
+            cls._cached_libvirt_uri = conn.getURI()
+
+    @classmethod
+    def _connect(cls, uri, read_only):
         def _connect_auth_cb(creds, opaque):
             if len(creds) == 0:
                 return 0
@@ -689,7 +703,9 @@ class LibvirtDriver(driver.ComputeDriver):
             flags = 0
             if read_only:
                 flags = libvirt.VIR_CONNECT_RO
-            return libvirt.openAuth(uri, auth, flags)
+            res = libvirt.openAuth(uri, auth, flags)
+            cls._set_working_uri(res)
+            return res
         except libvirt.libvirtError as ex:
             LOG.exception(_("Connection to libvirt failed: %s"), ex)
             payload = dict(ip=LibvirtDriver.get_host_ip_addr(),

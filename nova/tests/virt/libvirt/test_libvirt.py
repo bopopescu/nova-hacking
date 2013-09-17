@@ -408,6 +408,9 @@ class LibvirtConnTestCase(test.TestCase):
             def nodeDeviceLookupByName(self, x):
                 pass
 
+            def getType(self):
+                return 'QEMU'
+
         self.conn = FakeConn()
         self.stubs.Set(libvirt_driver.LibvirtDriver, '_connect',
                        lambda *a, **k: self.conn)
@@ -446,6 +449,9 @@ class LibvirtConnTestCase(test.TestCase):
         class FakeLibvirtDriver(object):
             def defineXML(self, xml):
                 return FakeVirtDomain()
+
+            def getType(self):
+                return 'QEMU'
 
         # Creating mocks
         volume_driver = ('iscsi=nova.tests.virt.libvirt.test_libvirt'
@@ -1693,6 +1699,7 @@ class LibvirtConnTestCase(test.TestCase):
         libvirt_driver.LibvirtDriver._conn.listDomainsID = lambda: range(4)
         libvirt_driver.LibvirtDriver._conn.lookupByID = fake_lookup
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         libvirt_driver.LibvirtDriver._conn.listDefinedDomains = lambda: []
 
         self.mox.ReplayAll()
@@ -1733,6 +1740,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         libvirt_driver.libvirt_utils.disk_type = "qcow2"
@@ -1784,6 +1792,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         libvirt_driver.libvirt_utils.disk_type = "qcow2"
@@ -1830,6 +1839,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         self.stubs.Set(libvirt_driver.libvirt_utils, 'disk_type', 'raw')
@@ -1882,6 +1892,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         self.stubs.Set(libvirt_driver.libvirt_utils, 'disk_type', 'raw')
@@ -1934,6 +1945,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         libvirt_driver.libvirt_utils.disk_type = "qcow2"
@@ -1982,6 +1994,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
         libvirt_driver.libvirt_utils.disk_type = "qcow2"
@@ -2033,6 +2046,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2083,6 +2097,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2128,6 +2143,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2174,6 +2190,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2221,6 +2238,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2270,6 +2288,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.StubOutWithMock(libvirt_driver.utils, 'execute')
         libvirt_driver.utils.execute = self.fake_execute
 
@@ -2290,6 +2309,7 @@ class LibvirtConnTestCase(test.TestCase):
     def test_attach_invalid_volume_type(self):
         self.create_fake_libvirt_mock()
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.ReplayAll()
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         self.assertRaises(exception.VolumeDriverNotFound,
@@ -2302,6 +2322,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.flags(libvirt_type='fake_type')
         self.create_fake_libvirt_mock()
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.ReplayAll()
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         self.assertRaises(exception.InvalidHypervisorType,
@@ -2319,6 +2340,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.flags(libvirt_type='qemu')
         self.create_fake_libvirt_mock()
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
         self.mox.ReplayAll()
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         self.stubs.Set(self.conn, "getLibVersion", get_lib_version_stub)
@@ -2352,7 +2374,7 @@ class LibvirtConnTestCase(test.TestCase):
         self.flags(libvirt_type='lxc')
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
 
-        self.assertEquals(conn.uri(), 'lxc:///')
+        self.assertEquals(conn.working_uri, 'lxc:///')
 
         network_info = _fake_network_info(self.stubs, 1)
         disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
@@ -2654,7 +2676,7 @@ class LibvirtConnTestCase(test.TestCase):
             self.flags(libvirt_type=libvirt_type)
             conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
 
-            self.assertEquals(conn.uri(), expected_uri)
+            self.assertEquals(conn.working_uri, expected_uri)
 
             network_info = _fake_network_info(self.stubs, 1)
             disk_info = blockinfo.get_disk_info(conn.hypervisor_type,
@@ -2694,7 +2716,7 @@ class LibvirtConnTestCase(test.TestCase):
         for (libvirt_type, (expected_uri, checks)) in type_uri_map.iteritems():
             self.flags(libvirt_type=libvirt_type)
             conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), True)
-            self.assertEquals(conn.uri(), testuri)
+            self.assertEquals(conn.working_uri, testuri)
         db.instance_destroy(user_context, instance_ref['uuid'])
 
     def test_ensure_filtering_rules_for_instance_timeout(self):
@@ -3588,6 +3610,7 @@ class LibvirtConnTestCase(test.TestCase):
 
             self.create_fake_libvirt_mock()
             libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup
+            libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
             conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
 
@@ -3637,6 +3660,7 @@ class LibvirtConnTestCase(test.TestCase):
 
             self.create_fake_libvirt_mock()
             libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup
+            libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
             libvirt_driver.LibvirtDriver._flush_libvirt_console = _fake_flush
             libvirt_driver.LibvirtDriver._append_to_file = _fake_append_to_file
 
@@ -4317,6 +4341,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         actual = conn.get_diagnostics({"name": "testvirt"})
@@ -4397,6 +4422,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         actual = conn.get_diagnostics({"name": "testvirt"})
@@ -4471,6 +4497,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         actual = conn.get_diagnostics({"name": "testvirt"})
@@ -4547,6 +4574,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         actual = conn.get_diagnostics({"name": "testvirt"})
@@ -4629,6 +4657,7 @@ class LibvirtConnTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = fake_lookup_name
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         conn = libvirt_driver.LibvirtDriver(fake.FakeVirtAPI(), False)
         actual = conn.get_diagnostics({"name": "testvirt"})
@@ -5027,6 +5056,7 @@ class LibvirtConnTestCase(test.TestCase):
         """
         self.mox.StubOutWithMock(libvirt_driver.LibvirtDriver, '_conn')
         libvirt_driver.LibvirtDriver._conn.lookupByName = self.fake_lookup
+        libvirt_driver.LibvirtDriver._conn.getType = lambda *args: 'QEMU'
 
         test_instance = copy.deepcopy(self.test_instance)
         test_instance['name'] = "test"

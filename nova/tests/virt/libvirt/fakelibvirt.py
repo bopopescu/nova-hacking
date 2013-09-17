@@ -615,8 +615,7 @@ class Connection(object):
         return dom
 
     def getType(self):
-        if self._uri == 'qemu:///system':
-            return 'QEMU'
+        return self._uri.split(':')[0].upper()
 
     def getLibVersion(self):
         return self.fakeLibVersion
